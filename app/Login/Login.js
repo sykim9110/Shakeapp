@@ -5,7 +5,9 @@ import {
   Text,
   View,
   Button,
-  TouchableHighlight
+  TouchableHighlight,
+  Animated,
+  Easing
 } from 'react-native';
 
 import firebase from 'firebase';
@@ -30,15 +32,13 @@ export default class Login extends Component {
           password: '',
           verifyEmail: false,
           signinStatus: '로그인',
-          noServer: 'false',
           passwordError: false,
-          _errorMessage: ''
+          _errorMessage: '',
+          lodingAnimated: false
         }
         //이메일 auth
         this.toggleSignIn = this.toggleSignIn.bind(this);
         this.sendEmailVerification = this.sendEmailVerification.bind(this);
-
-
     }
 
     // *Handles the sign in button press.
@@ -67,12 +67,13 @@ export default class Login extends Component {
             var errorMessage = error.message;
             // [START_EXCLUDE]
             if (errorCode === 'auth/wrong-password') {
-              this.setState({passwordError: true, _errorMessage: '비밀번호가 일치하지 않습니다.'})
+              this.setState({passwordError: true, _errorMessage: '비밀번호가 일치하지 않습니다.', lodingAnimated: false})
             } else if(errorMessage === 'There is no user record corresponding to this identifier. The user may have been deleted.') {
-              this.setState({passwordError: true, _errorMessage: 'SHAKE에 등록되지 않은 아이디입니다.'})
-            } else if(errorMessage === 'The email address is badly formatted.') {
-              this.setState({passwordError: true, _errorMessage: '이메일을 정확히 입력하세요.'})
+              this.setState({passwordError: true, _errorMessage: 'SHAKE에 등록되지 않은 아이디입니다.', lodingAnimated: false})
+            } else if(errorMessage === 'The email address is badly formatted.' ) {
+              this.setState({passwordError: true, _errorMessage: '이메일을 정확히 입력하세요.', lodingAnimated: false})
             } else {
+              this.setState({lodingAnimated: false})
               alert(errorMessage);
             }
             console.log(error);
@@ -106,7 +107,7 @@ export default class Login extends Component {
       // [START authstatelistener]
       firebase.auth().onAuthStateChanged((user) => {
         // [START_EXCLUDE silent]
-        this.setState({verifyEmail: false});
+        // this.setState({verifyEmail: false});
         // [END_EXCLUDE]
         if (user) {
           // User is signed in.
@@ -122,7 +123,7 @@ export default class Login extends Component {
           Actions.tabbar();
           Actions.first();
           if (!emailVerified) {
-            this.setState({verifyEmail: true});
+            // this.setState({verifyEmail: true});
           }
           // [END_EXCLUDE]
         } else {
@@ -136,7 +137,7 @@ export default class Login extends Component {
         // [END_EXCLUDE]
       });
       // [END authstatelistener]
-      this.setState({noServer: 'good'})
+      // this.setState({noServer: 'good'})
       // document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
       // document.getElementById('quickstart-sign-up').addEventListener('click', handleSignUp, false);
       // document.getElementById('quickstart-verify-email').addEventListener('click', sendEmailVerification, false);
@@ -183,7 +184,9 @@ export default class Login extends Component {
         <Text
           style={{color: 'white'}}
           onPress={() => {Actions.tabbar()}}
-        >SHAKE 계속 사용하기</Text>
+        >
+          SHAKE 계속 사용하기
+        </Text>
       );
 
       return (
@@ -205,18 +208,6 @@ export default class Login extends Component {
                 accessibilityLabel="로그인"
               />
             </View>
-            {/* <Button
-              onPress={this.handleSignUp}
-              title='회원가입'
-              color='#96C8FF'
-              accessibilityLabel="회원가입"
-            /> */}
-            {/* <Button
-              onPress={this.sendPasswordReset}
-              title='비밀번호 초기화'
-              color='#96C8FF'
-              accessibilityLabel="이메일로 비밀번호 초기화"
-            /> */}
           </View>
         </View>
       );

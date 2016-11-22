@@ -10,13 +10,11 @@ import {
 import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase';
 
-class AuthPage extends Component {
+class PasswordResetPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: '',
-      verifyEmail: false,
       passwordError: false,
       _errorMessage: '',
       AuthError: false
@@ -89,7 +87,7 @@ const AuthScreen = () => {
   return (
     <View style={styles.container}>
       <View style={{flex: 5}}>
-        <AuthPage />
+        <PasswordResetPage />
       </View>
       <View style={{flex: 2}}>
         <Text
