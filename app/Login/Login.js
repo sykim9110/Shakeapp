@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import firebase from 'firebase';
+
 const app = firebase.initializeApp({
     apiKey: "AIzaSyBAP6CGUxpBlN9N6G0_bW_pNRg91idBdhQ",
     authDomain: "shake-d5274.firebaseapp.com",
@@ -29,11 +30,12 @@ export default class Login extends Component {
           password: '',
           verifyEmail: false,
           signinStatus: '로그인',
-          noServer: 'false'
+          noServer: 'false',
+          passwordError: false,
+          _errorMessage: ''
         }
         //이메일 auth
         this.toggleSignIn = this.toggleSignIn.bind(this);
-        this.handleSignUp = this.handleSignUp.bind(this);
         this.sendEmailVerification = this.sendEmailVerification.bind(this);
         this.sendPasswordReset = this.sendPasswordReset.bind(this);
 
@@ -42,6 +44,7 @@ export default class Login extends Component {
 
     // *Handles the sign in button press.
     toggleSignIn() {
+        this.setState({passwordError: false});
         if (firebase.auth().currentUser) {
           // [START signout]
           firebase.auth().signOut();
@@ -50,11 +53,11 @@ export default class Login extends Component {
           var email = this.state.email;
           var password = this.state.password;
           if (email.length < 4) {
-            alert('이메일을 입력하세요')
+            this.setState({passwordError: true, _errorMessage: '이메일을 입력하세요.'})
             return;
           }
           if (password.length < 4) {
-            alert('비밀번호를 입력하세요')
+            this.setState({passwordError: true, _errorMessage: '비밀번호를 입력하세요.'})
             return;
           }
           // Sign in with email and pass.
@@ -65,7 +68,11 @@ export default class Login extends Component {
             var errorMessage = error.message;
             // [START_EXCLUDE]
             if (errorCode === 'auth/wrong-password') {
-              alert('비밀번호가 일치하지 않습니다');
+              this.setState({passwordError: true, _errorMessage: '비밀번호가 일치하지 않습니다.'})
+            } else if(errorMessage === 'There is no user record corresponding to this identifier. The user may have been deleted.') {
+              this.setState({passwordError: true, _errorMessage: 'SHAKE에 등록되지 않은 아이디입니다.'})
+            } else if(errorMessage === 'The email address is badly formatted.') {
+              this.setState({passwordError: true, _errorMessage: '이메일을 정확히 입력하세요.'})
             } else {
               alert(errorMessage);
             }
@@ -76,36 +83,6 @@ export default class Login extends Component {
         // [END authwithemail]
       }
       this.setState({Signin: true});
-    }
-
-    // *Handles the Sign up button press.
-    handleSignUp() {
-        var email = this.state.email;
-        var password = this.state.password;
-        if(email.length < 4) {
-          alert('이메일을 입력하세요')
-          return;
-        }
-        if (password.length < 4) {
-          alert('비밀번호를 입력하세요')
-          return;
-        }
-        // Sign in with email and pass.
-        // [START createwithemail]
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // [START_EXCLUDE]
-          if (errorCode == 'auth/weak-password') {
-            alert('비밀번호를 더 어렵게 설정하세요');
-          } else {
-            alert(errorMessage);
-          }
-          console.log(error);
-          // [END_EXCLUDE]
-        });
-        // [END createwithemail]
     }
 
     // *Sends an email verification to the user.
@@ -177,6 +154,7 @@ export default class Login extends Component {
           var providerData = user.providerData;
           // [START_EXCLUDE silent]
           this.setState({signinStatus: '로그아웃'});
+          Actions.first();
           if (!emailVerified) {
             this.setState({verifyEmail: true});
           }
@@ -209,30 +187,41 @@ export default class Login extends Component {
         />
       );
 
+      const authTextInput = (
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholderTextColor="#FFFFFF"
+            underlineColorAndroid="#FFFFFF"
+            selectionColor="#FFFFFF"
+            keyboardType="email-address"
+            placeholder="email"
+            maxLength = {30}
+            onChangeText={(text) => this.setState({email: text})}
+            value={this.state.text}
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholderTextColor="#FFFFFF"
+            underlineColorAndroid="#FFFFFF"
+            selectionColor="#FFFFFF"
+            placeholder="password"
+            maxLength = {30}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({password: text})}
+            value={this.state.text}
+          />
+        </View>
+      );
+
       return (
         <View style={styles.container}>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              placeholderTextColor="#FFFFFF"
-              underlineColorAndroid="#FFFFFF"
-              selectionColor="#FFFFFF"
-              keyboardType="email-address"
-              placeholder="email"
-              maxLength = {20}
-              onChangeText={(text) => this.setState({email: text})}
-              value={this.state.text}/>
-            <TextInput
-              style={styles.textInput}
-              placeholderTextColor="#FFFFFF"
-              underlineColorAndroid="#FFFFFF"
-              selectionColor="#FFFFFF"
-              placeholder="password"
-              maxLength = {20}
-              secureTextEntry={true}
-              onChangeText={(text) => this.setState({password: text})}
-              value={this.state.text}/>
+          <View>
+            {this.state.passwordError && <Text style={{color: 'red', fontSize: 10}}>{this.state._errorMessage}</Text>}
           </View>
+
+            {this.state.signinStatus === '로그인' && authTextInput}
+
           <View style={styles.buttonContainer}>
             <View style={styles.buttonLogin}>
               <Button
@@ -249,7 +238,6 @@ export default class Login extends Component {
               color='#96C8FF'
               accessibilityLabel="회원가입"
             /> */}
-            {this.state.verifyEmail ? verifyEmail : null}
             {/* <Button
               onPress={this.sendPasswordReset}
               title='비밀번호 초기화'
@@ -281,6 +269,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    padding: 30
   },
   buttonLogin: {
     width: 150

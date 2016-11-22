@@ -6,13 +6,14 @@ import {
   Text
 } from 'react-native';
 
-import ScarletScreen from './ScarletScreen';
+import LoginScreen from './LoginScreen';
+import AuthScreen from './AuthScreen';
+
+import FirstScreen from './FirstScreen';
 import GrayScreen from './GrayScreen';
 
-import LoginScreen from './LoginScreen';
 import GoldScreen from './GoldScreen';
 
-import ModalScreen from './ModalScreen';
 
 const TabIcon = ({ selected, title }) => {
   return (
@@ -27,63 +28,79 @@ const App = () => {
       <Scene key="root">
 
         <Scene
-          key="login"
-          component={LoginScreen}
-          hideNavBar
-          initial
-        />
-
-        <Scene
           key="tabbar"
           tabs
-          tabBarStyle={{ backgroundColor: '#ffffff' }}
+          tabBarStyle={{}}
         >
 
-          <Scene key="osu" title="OSU" icon={TabIcon}>
-            <Scene
-              key="scarlet"
-              component={ScarletScreen}
-              title="Scarlet"
-            />
-            <Scene
-              key="gray"
-              component={GrayScreen}
-              title="Gray"
-            />
-          </Scene>
+              <Scene
+                key="login"
+                component={LoginScreen}
+                hideNavBar
+                hideTabBar
+                initial
+              />
 
-          <Scene key="um" title="UM" icon={TabIcon}>
-            <Scene
-              key="gray"
-              component={GrayScreen}
-              title="Gray"
-            />
-          </Scene>
+              <Scene
+                key="auth"
+                component={AuthScreen}
+                title="AuthScreen"
+                direction="vertical"
+                hideNavBar
+              />
 
-          <Scene key="vu" title="VU" icon={TabIcon}>
-            <Scene
-              key="gold"
-              component={GoldScreen}
-              title="Gold"
-              initial
-            />
-            <Scene
-              key="gray"
-              component={GrayScreen}
-              title="Gray"
-            />
-          </Scene>
+              <Scene
+                key="first"
+                component={FirstScreen}
+                title="First"
+                hideNavBar
+              />
+
+
+            <Scene key="am" title="AM" icon={TabIcon}>
+              <Scene
+                key="gold"
+                component={GoldScreen}
+                title="Gold"
+                hideNavBar
+              />
+              <Scene
+                key="gray"
+                component={GrayScreen}
+                title="Gray"
+              />
+            </Scene>
+
+            <Scene key="um" title="SHAKE" icon={TabIcon}>
+              <Scene
+                key="gold"
+                component={GoldScreen}
+                title="Gold"
+                hideNavBar
+              />
+              <Scene
+                key="gray"
+                component={GrayScreen}
+                title="Gray"
+              />
+            </Scene>
+
+            <Scene key="vu" title="VU" icon={TabIcon}>
+              <Scene
+                key="gold"
+                component={GoldScreen}
+                title="Gold"
+                hideNavBar
+              />
+              <Scene
+                key="gray"
+                component={GrayScreen}
+                title="Gray"
+              />
+            </Scene>
 
         </Scene>
 
-
-        <Scene
-          key="modal"
-          component={ModalScreen}
-          title="ModalScreen"
-          direction="vertical"
-          hideNavBar
-        />
       </Scene>
     </Router>
   );

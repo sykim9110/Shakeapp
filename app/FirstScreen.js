@@ -7,13 +7,13 @@ import {
 
 import { Actions } from 'react-native-router-flux';
 
-const ModalScreen = () => {
+const FirstScreen = () => {
   return (
     <View style={styles.container}>
       <Text
         style={styles.welcome}
-        onPress={() => {Actions.pop()}}>
-        Modal
+        onPress={() => {Actions.gray()}}>
+        First Screen
       </Text>
     </View>
   );
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#bb0000',
   },
   welcome: {
     fontSize: 20,
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalScreen;
+export default FirstScreen;

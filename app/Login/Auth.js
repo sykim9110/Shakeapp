@@ -17,7 +17,7 @@ export default class Auth extends Component {
   render() {
     return (
       <View style={styles.textAuthContainer}>
-         <Text style={styles.textAuth} onPress={()=>{Actions.modal()}}>회원가입하기</Text>
+         <Text style={styles.textAuth} onPress={()=>{Actions.auth()}}>회원가입하기</Text>
       </View>
     );
   }

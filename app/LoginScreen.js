@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
+  TextInput,
   Text,
-  View
+  View,
+  Button,
+  TouchableHighlight
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -13,11 +16,11 @@ import Auth from './Login/Auth';
 
 const LoginScreen = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.logo}>
+    <View style={styles.Scontainer}>
+      <View style={styles.Slogo}>
         <Loginlogo />
       </View>
-      <View style={styles.login}>
+      <View style={styles.Slogin}>
         <Login />
         <Auth />
       </View>
@@ -26,13 +29,13 @@ const LoginScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  Scontainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#96C8FF',
   },
-  logo: {
+  Slogo: {
     flex: 3,
     justifyContent: 'center'
   },
@@ -40,15 +43,36 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: '#96C8FF'
   },
-  login: {
+  Slogin: {
     flex: 3
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#96C8FF'
   },
+  textInputContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  textInput: {
+    width: 200,
+    color: '#FFFFFF'
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 30
+  },
+  buttonLogin: {
+    width: 150
+  },
+  textAuth: {
+    fontSize: 12,
+    color: '#FFFFFF'
+  }
 });
 
 export default LoginScreen;
