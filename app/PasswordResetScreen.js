@@ -21,41 +21,34 @@ class AuthPage extends Component {
       _errorMessage: '',
       AuthError: false
     };
-    this.handleSignUp = this.handleSignUp.bind(this);
+    this.sendPasswordReset = this.sendPasswordReset.bind(this);
+
   }
-  // *Handles the Sign up button press.
-  handleSignUp() {
-      this.setState({passwordError: false});
+  sendPasswordReset() {
+      this.setState({passwordError: false, AuthError: false})
       var email = this.state.email;
-      var password = this.state.password;
-      if(email.length < 4) {
-        this.setState({passwordError: true, _errorMessage: '이메일을 입력하세요.'});
-        return;
-      }
-      if (password.length < 4) {
-        this.setState({passwordError: true, _errorMessage: '4자리 이상 비밀번호를 입력하세요.'});
-        return;
-      }
-      // Sign in with email and pass.
-      // [START createwithemail]
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
+      // [START sendpasswordemail]
+      firebase.auth().sendPasswordResetEmail(email).then(() => {
+        // Password Reset Email Sent!
+        // [START_EXCLUDE]
+        this.setState({AuthError: true, _errorMessage: '해당 이메일로 비밀번호 초기화 메일을 발송하였습니다.'}); //Password Reset Email Sent!
+        // [END_EXCLUDE]
+      }).catch((error) => {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
         // [START_EXCLUDE]
-        if (errorCode == 'auth/weak-password') {
-          this.setState({passwordError: true, _errorMessage: '비밀번호를 더 어렵게 설정하세요.'});
-        } else if(errorMessage === 'The email address is badly formatted.') {
-          this.setState({passwordError: true, _errorMessage: '이메일을 정확히 입력하세요.'})
-        } else if(errorMessage === 'The email address is already in use by another account.') {
-          this.setState({passwordError: true, _errorMessage: 'SHAKE에 이미 등록된 아이디입니다.'})
+        if (errorCode == 'auth/invalid-email') {
+            this.setState({passwordError: true, _errorMessage: '이메일을 정확히 입력하세요.'});
+        } else if (errorCode == 'auth/user-not-found') {
+            this.setState({passwordError: true, _errorMessage: 'SHAKE에 등록되지 않은 아이디입니다.'})
         } else {
           alert(errorMessage);
         }
         console.log(error);
         // [END_EXCLUDE]
       });
-      // [END createwithemail]
+      // [END sendpasswordemail];
   }
   render() {
     return (
@@ -72,28 +65,17 @@ class AuthPage extends Component {
             underlineColorAndroid="#FFFFFF"
             selectionColor="#FFFFFF"
             keyboardType="email-address"
-            placeholder="email"
+            placeholder="아이디를 적어주세요"
             maxLength = {30}
             onChangeText={(text) => this.setState({email: text})}
-            value={this.state.text}
-          />
-          <TextInput
-            style={styles.textInput}
-            placeholderTextColor="#FFFFFF"
-            underlineColorAndroid="#FFFFFF"
-            selectionColor="#FFFFFF"
-            placeholder="password"
-            maxLength = {30}
-            secureTextEntry={true}
-            onChangeText={(text) => this.setState({password: text})}
             value={this.state.text}
           />
         </View>
         <View style={styles.buttonContainer}>
           <Button
             style={styles.button}
-            onPress={this.handleSignUp}
-            title='회원가입'
+            onPress={this.sendPasswordReset}
+            title='비밀번호 초기화'
             color='#6090FF'
             accessibilityLabel="회원가입"
           />
@@ -133,7 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorCode: {
-    flex: 1,
+    flex: 3,
     justifyContent: 'flex-end',
   },
   welcome: {

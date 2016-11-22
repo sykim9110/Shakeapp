@@ -37,7 +37,6 @@ export default class Login extends Component {
         //이메일 auth
         this.toggleSignIn = this.toggleSignIn.bind(this);
         this.sendEmailVerification = this.sendEmailVerification.bind(this);
-        this.sendPasswordReset = this.sendPasswordReset.bind(this);
 
 
     }
@@ -97,40 +96,6 @@ export default class Login extends Component {
         // [END sendemailverification]
     }
 
-    sendPasswordReset() {
-        var email = this.state.email;
-        // [START sendpasswordemail]
-        firebase.auth().sendPasswordResetEmail(email).then(() => {
-          // Password Reset Email Sent!
-          // [START_EXCLUDE]
-          alert('이메일로 메일을 보냈습니다.'); //Password Reset Email Sent!
-          // [END_EXCLUDE]
-        }).catch((error) => {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // [START_EXCLUDE]
-          if (errorCode == 'auth/invalid-email') {
-            alert(errorMessage);
-          } else if (errorCode == 'auth/user-not-found') {
-            alert(errorMessage);
-          }
-          console.log(error);
-          // [END_EXCLUDE]
-        });
-        // [END sendpasswordemail];
-    }
-
-    /**
-     * Handle the sign out button press.
-     */
-    handleSignOut() {
-      var googleAuth = gapi.auth2.getAuthInstance();
-      googleAuth.signOut().then(() => {
-        firebase.auth().signOut();
-      });
-    }
-
     /**
      *  handles setting up UI event listeners and registering Firebase auth listeners:
      *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
@@ -154,6 +119,7 @@ export default class Login extends Component {
           var providerData = user.providerData;
           // [START_EXCLUDE silent]
           this.setState({signinStatus: '로그아웃'});
+          Actions.tabbar();
           Actions.first();
           if (!emailVerified) {
             this.setState({verifyEmail: true});
@@ -213,6 +179,12 @@ export default class Login extends Component {
           />
         </View>
       );
+      const shakeIn = (
+        <Text
+          style={{color: 'white'}}
+          onPress={() => {Actions.tabbar()}}
+        >SHAKE 계속 사용하기</Text>
+      );
 
       return (
         <View style={styles.container}>
@@ -220,6 +192,7 @@ export default class Login extends Component {
             {this.state.passwordError && <Text style={{color: 'red', fontSize: 10}}>{this.state._errorMessage}</Text>}
           </View>
 
+            {this.state.signinStatus === '로그아웃' && shakeIn}
             {this.state.signinStatus === '로그인' && authTextInput}
 
           <View style={styles.buttonContainer}>

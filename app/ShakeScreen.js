@@ -6,15 +6,19 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
+import firebase from 'firebase';
 
-const GoldScreen = () => {
+import ShakeAnimate from './animate/StudySpace';
+
+const ShakeScreen = () => {
   return (
     <View style={styles.container}>
-      <Text
+      <ShakeAnimate />
+      {/* <Text
         style={styles.welcome}
-        onPress={() => {Actions.gray()}}>
-        Gold Screen
-      </Text>
+        onPress={() => {Actions.profile()}}>
+        ShakeScreen
+      </Text> */}
     </View>
   );
 }
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: 'gold',
   },
   welcome: {
@@ -34,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoldScreen;
+export default ShakeScreen;

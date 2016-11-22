@@ -13,6 +13,7 @@ import { Actions } from 'react-native-router-flux';
 import Loginlogo from './Login/Svg/Loginlogo';
 import Login from './Login/Login';
 import Auth from './Login/Auth';
+import PasswordReset from './Login/PasswordReset';
 
 const LoginScreen = () => {
   return (
@@ -22,6 +23,7 @@ const LoginScreen = () => {
       </View>
       <View style={styles.Slogin}>
         <Login />
+        <PasswordReset />
         <Auth />
       </View>
     </View>

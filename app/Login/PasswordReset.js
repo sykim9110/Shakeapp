@@ -9,18 +9,18 @@ import {
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 
-export default class Auth extends Component {
+export default class PasswordReset extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
     return (
-      <View style={styles.textAuthContainer}>
+      <View style={styles.textPasswordContainer}>
          <Text
-            style={styles.textAuth}
-            onPress={()=>{Actions.auth()}}>
-            회원가입하기
+            style={styles.textPassword}
+            onPress={()=>{Actions.password()}}>
+            앗! 비밀번호를 까먹으셨나요?
         </Text>
       </View>
     );
@@ -28,11 +28,12 @@ export default class Auth extends Component {
 }
 
 const styles = StyleSheet.create({
-  textAuthContainer: {
+  textPasswordContainer: {
     marginBottom: 15,
   },
-  textAuth: {
+  textPassword: {
     textAlign: 'center',
+    fontSize: 10,
     color: 'white'
   }
 })

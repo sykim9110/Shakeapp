@@ -8,11 +8,12 @@ import {
 
 import LoginScreen from './LoginScreen';
 import AuthScreen from './AuthScreen';
+import PasswordResetScreen from './PasswordResetScreen';
 
 import FirstScreen from './FirstScreen';
-import GrayScreen from './GrayScreen';
+import ShakeScreen from './ShakeScreen';
 
-import GoldScreen from './GoldScreen';
+import ProfileScreen from './ProfileScreen';
 
 
 const TabIcon = ({ selected, title }) => {
@@ -26,6 +27,30 @@ const App = () => {
   return (
     <Router>
       <Scene key="root">
+
+        <Scene
+          key="login"
+          component={LoginScreen}
+          hideNavBar
+          hideTabBar
+          initial
+        />
+
+        <Scene
+          key="auth"
+          component={AuthScreen}
+          title="AuthScreen"
+          direction="vertical"
+          hideNavBar
+        />
+
+        <Scene
+          key="password"
+          component={PasswordResetScreen}
+          title="PasswordResetScreen"
+          direction="vertical"
+          hideNavBar
+        />
 
         <Scene
           key="tabbar"
@@ -42,14 +67,6 @@ const App = () => {
               />
 
               <Scene
-                key="auth"
-                component={AuthScreen}
-                title="AuthScreen"
-                direction="vertical"
-                hideNavBar
-              />
-
-              <Scene
                 key="first"
                 component={FirstScreen}
                 title="First"
@@ -57,45 +74,40 @@ const App = () => {
               />
 
 
-            <Scene key="am" title="AM" icon={TabIcon}>
+            <Scene key="am" title="MAIN" icon={TabIcon}>
               <Scene
-                key="gold"
-                component={GoldScreen}
-                title="Gold"
+                key="shake"
+                component={ShakeScreen}
+                title="Shake"
                 hideNavBar
               />
               <Scene
-                key="gray"
-                component={GrayScreen}
-                title="Gray"
+                key="profile"
+                component={ProfileScreen}
+                title="Profile"
               />
             </Scene>
 
             <Scene key="um" title="SHAKE" icon={TabIcon}>
               <Scene
-                key="gold"
-                component={GoldScreen}
-                title="Gold"
+                key="shake"
+                component={ShakeScreen}
+                title="Shake"
                 hideNavBar
-              />
-              <Scene
-                key="gray"
-                component={GrayScreen}
-                title="Gray"
               />
             </Scene>
 
-            <Scene key="vu" title="VU" icon={TabIcon}>
+            <Scene key="vu" title="PROFILE" icon={TabIcon}>
               <Scene
-                key="gold"
-                component={GoldScreen}
-                title="Gold"
+                key="shake"
+                component={ShakeScreen}
+                title="Shake"
                 hideNavBar
               />
               <Scene
-                key="gray"
-                component={GrayScreen}
-                title="Gray"
+                key="profile"
+                component={ProfileScreen}
+                title="Profile"
               />
             </Scene>
 

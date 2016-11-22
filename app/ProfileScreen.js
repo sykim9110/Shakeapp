@@ -6,13 +6,21 @@ import {
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
+import firebase from 'firebase';
 
-const GrayScreen = () => {
+const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Text
         style={styles.welcome}>
-        GrayScreen
+        ProfileScreen
+      </Text>
+      <Text
+        onPress={() => {
+          firebase.auth().signOut();
+          Actions.login();
+        }}>
+        Logout
       </Text>
     </View>
   );
@@ -33,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GrayScreen;
+export default ProfileScreen;
