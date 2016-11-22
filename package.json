@@ -7,8 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "firebase": "^3.6.1",
     "react": "15.3.2",
-    "react-native": "0.37.0"
+    "react-native": "0.37.0",
+    "react-native-router-flux": "^3.37.0",
+    "react-native-svg": "^4.3.3"
   },
   "jest": {
     "preset": "jest-react-native"
